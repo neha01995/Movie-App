@@ -1,64 +1,93 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from "redux";
 
-import {ADD_MOVIES,ADD_TO_FAVOURITES,REMOVE_FROM_FAVOURITES,SET_SHOW_FAVOURITES} from '../actions';
-const initialMoviesState={
-    list:[],
-    favourites:[],
-    showFavourites:false
+import {
+  ADD_MOVIES,
+  ADD_TO_FAVOURITES,
+  REMOVE_FROM_FAVOURITES,
+  SET_SHOW_FAVOURITES,
+  ADD_MOVIE_To_LIST,
+  ADD_SEARCH_RESULT,
+} from "../actions";
+
+const initialMoviesState = {
+  list: [],
+  favourites: [],
+  showFavourites: false,
 };
 
-export function movies (state=initialMoviesState,action){
-    console.log('Movies reducer');
-    // if(action.type===ADD_MOVIES){
-    //     return {
-    //         ...state,
-    //         list:action.movies
-    //     }
-    // }
-    // return state;
-    switch (action.type){
-        case ADD_MOVIES:
-            return{
-                ...state,
-                list:action.movies
-            }
-        case ADD_TO_FAVOURITES:
-            return{
-                ...state,
-                favourites:[action.movie,...state.favourites]
-            }
-        case REMOVE_FROM_FAVOURITES:
-            const filteredArray=state.favourites.filter(
-                movie => movie.Title !==action.movie.Title
-            );
-                return{
-                    ...state,
-                    favourites:filteredArray
-                };
-        case SET_SHOW_FAVOURITES:
-                return{
-                    ...state,
-                    showFavourites:action.val
-                    }
+export function movies(state = initialMoviesState, action) {
+  console.log("Movies reducer");
+  // if(action.type===ADD_MOVIES){
+  //     return {
+  //         ...state,
+  //         list:action.movies
+  //     }
+  // }
+  // return state;
+  switch (action.type) {
+    case ADD_MOVIES:
+      return {
+        ...state,
+        list: action.movies,
+      };
+    case ADD_TO_FAVOURITES:
+      return {
+        ...state,
+        favourites: [action.movie, ...state.favourites],
+      };
+    case REMOVE_FROM_FAVOURITES:
+      const filteredArray = state.favourites.filter(
+        (movie) => movie.Title !== action.movie.Title
+      );
+      return {
+        ...state,
+        favourites: filteredArray,
+      };
+    case SET_SHOW_FAVOURITES:
+      return {
+        ...state,
+        showFavourites: action.val,
+      };
+    case ADD_MOVIE_To_LIST:
+      return {
+        ...state,
+        list: [action.movie, ...state.list],
+      };
 
-        
-        
-            default:
-                return state;
-    }
+    default:
+      return state;
+  }
 }
 
-const initialSearchState={
-    result:{}
+const initialSearchState = {
+  result: {},
+  showSearchResults: false,
 };
-export function search(state=initialSearchState,action){
-    console.log('search reducer');
-    return state;
-}
+export function search(state = initialSearchState, action) {
+  // action.movies likha hua tha apne
+  switch (action.type) {
+    case ADD_SEARCH_RESULT:
+      return {
+        ...state,
+        result: action.movie,
+        showSearchResults: true,
+      };
+    case ADD_MOVIE_To_LIST:
+      return {
+        ...state,
+        showSearchResults: false,
+      };
 
-const initailRootState={
-    movies:initialMoviesState,
-    search:initialSearchState
+    default:
+      return state;
+  }
+}
+//console.log('search reducer');
+//return state;
+
+const initailRootState = {
+  movies: initialMoviesState,
+  search: initialSearchState,
 };
 // export default function rootReducer(state=initailRootState,action){
 //     return {
@@ -68,6 +97,6 @@ const initailRootState={
 // }
 
 export default combineReducers({
-    movies,
-    search
+  movies,
+  search,
 });
